@@ -4,6 +4,7 @@ import { MessageCircle, X, Send, Loader2 } from 'lucide-react';
 import { ChatMessage } from '../types';
 import { getChatbotResponse, getDefaultResponse } from '../data/chatbotResponses';
 import { useLanguage } from '../context/LanguageContext.tsx';
+import { getDestinations } from '../data/destinations';
 
 // Remplacez par votre clé API (obtenue sur https://aistudio.google.com/)
 const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY || '';
@@ -45,9 +46,33 @@ async function getBestModel(apiKey: string): Promise<string> {
 async function callGeminiAPI(prompt: string, language: string): Promise<string> {
   const modelName = await getBestModel(GEMINI_API_KEY);
 
+  // Récupération et formatage des données réelles de l'application pour le contexte
+  const destinations = getDestinations(language as 'en' | 'fr');
+  const contextData = destinations.map(d =>
+    `- ${d.name} (${d.period}, ${d.year}): ${d.price}. ${d.shortDescription} (Détails: ${d.fullDescription})`
+  ).join('\n');
+
   const systemPrompt = language === 'fr'
-    ? "Tu es un agent de voyage temporel pour TimeTravel Agency. Tu vends des voyages pour Paris 1889, le Crétacé, et Florence 1504. Sois poli, professionnel, concis et enthousiaste. Ne parle que de voyage temporel."
-    : "You are a time travel agent for TimeTravel Agency. You sell trips to Paris 1889, Cretaceous Period, and Florence 1504. Be polite, professional, concise, and enthusiastic. Only talk about time travel.";
+    ? `Tu es l'assistant virtuel officiel de "TimeTravel Agency".
+    
+    DONNÉES OFFICIELLES (Utilise UNIQUEMENT ces infos) :
+    ${contextData}
+    
+    DIRECTIVES :
+    1. Tu ne vends QUE les destinations listées ci-dessus. Si on te demande autre chose (ex: futur, 2050), refuse poliment.
+    2. Utilise les vrais prix et descriptions fournis. N'invente pas.
+    3. Ton ton est : Luxueux, Professionnel, Enthousiaste.
+    4. Réponses courtes (max 3 phrases).`
+    : `You are the official virtual assistant of "TimeTravel Agency".
+    
+    OFFICIAL DATA (Use ONLY this info):
+    ${contextData}
+    
+    GUIDELINES:
+    1. You ONLY sell the destinations listed above. If asked for anything else (e.g. future, 2050), politely refuse.
+    2. Use the real prices and descriptions provided. Do not invent.
+    3. Tone: Luxury, Professional, Enthusiastic.
+    4. Keep answers short (max 3 sentences).`;
 
   try {
     // Utilisation du modèle déterminé dynamiquement
