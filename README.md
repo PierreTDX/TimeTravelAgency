@@ -56,6 +56,7 @@ TimeTravel Agency est une application interactive à page unique qui permet aux 
 - Fenêtre de chat extensible avec interface utilisateur moderne
 - Système de réponse basé sur des modèles
 - Personnalité conversationnelle en tant que consultant de voyage virtuel
+- **Intelligence Hybride** : Utilise l'API Google Gemini pour les requêtes avancées, avec un système de repli local (mode dégradé) si l'API n'est pas configurée.
 - Fonctionnalités :
   - Recommandations de destinations
   - Informations sur les prix

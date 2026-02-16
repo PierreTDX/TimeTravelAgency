@@ -2,8 +2,80 @@ import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle, X, Send, Loader2 } from 'lucide-react';
 import { ChatMessage } from '../types';
-import { getChatbotResponse } from '../data/chatbotResponses';
+import { getChatbotResponse, getDefaultResponse } from '../data/chatbotResponses';
 import { useLanguage } from '../context/LanguageContext.tsx';
+
+// Remplacez par votre clé API (obtenue sur https://aistudio.google.com/)
+const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY || '';
+
+// Cache pour éviter de lister les modèles à chaque appel
+let cachedModelName: string | null = null;
+
+async function getBestModel(apiKey: string): Promise<string> {
+  if (cachedModelName) return cachedModelName;
+
+  try {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
+    const data = await response.json();
+
+    if (data.models) {
+      // Chercher un modèle qui supporte generateContent (texte)
+      const capableModels = data.models.filter((m: any) =>
+        m.supportedGenerationMethods &&
+        m.supportedGenerationMethods.includes('generateContent')
+      );
+
+      // Préférence pour flash, puis pro, puis n'importe lequel
+      const preferred = capableModels.find((m: any) => m.name.includes('flash')) ||
+        capableModels.find((m: any) => m.name.includes('pro')) ||
+        capableModels[0];
+
+      if (preferred) {
+        cachedModelName = preferred.name;
+        return preferred.name;
+      }
+    }
+  } catch (error) {
+    // Fallback silencieux
+  }
+
+  return 'models/gemini-1.5-flash'; // Fallback
+}
+
+async function callGeminiAPI(prompt: string, language: string): Promise<string> {
+  const modelName = await getBestModel(GEMINI_API_KEY);
+
+  const systemPrompt = language === 'fr'
+    ? "Tu es un agent de voyage temporel pour TimeTravel Agency. Tu vends des voyages pour Paris 1889, le Crétacé, et Florence 1504. Sois poli, professionnel, concis et enthousiaste. Ne parle que de voyage temporel."
+    : "You are a time travel agent for TimeTravel Agency. You sell trips to Paris 1889, Cretaceous Period, and Florence 1504. Be polite, professional, concise, and enthusiastic. Only talk about time travel.";
+
+  try {
+    // Utilisation du modèle déterminé dynamiquement
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/${modelName}:generateContent?key=${GEMINI_API_KEY}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: `${systemPrompt}\n\nUser: ${prompt}` }] }]
+      })
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(`Erreur ${response.status}: ${errorData.error?.message || response.statusText}`);
+    }
+
+    const data = await response.json();
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+
+    if (!text) {
+      return getDefaultResponse(language as 'en' | 'fr');
+    }
+
+    return text;
+  } catch (error) {
+    throw error;
+  }
+}
 
 export const Chatbot = () => {
   const { t, language } = useLanguage();
@@ -59,17 +131,43 @@ export const Chatbot = () => {
     setInputValue('');
     setIsTyping(true);
 
-    setTimeout(() => {
-      const botResponse = getChatbotResponse(inputValue, language);
-      const botMessage: ChatMessage = {
-        id: (Date.now() + 1).toString(),
-        text: botResponse,
-        sender: 'bot',
-        timestamp: new Date()
-      };
-      setMessages(prev => [...prev, botMessage]);
-      setIsTyping(false);
-    }, 1000);
+    // 1. Chercher une réponse locale (rapide et fiable pour les infos basiques)
+    const localResponse = getChatbotResponse(inputValue, language);
+
+    if (localResponse) {
+      setTimeout(() => {
+        const botMessage: ChatMessage = {
+          id: (Date.now() + 1).toString(),
+          text: localResponse,
+          sender: 'bot',
+          timestamp: new Date()
+        };
+        setMessages(prev => [...prev, botMessage]);
+        setIsTyping(false);
+      }, 600);
+    } else {
+      // 2. Sinon, appeler l'IA (plus intelligent)
+      try {
+        const aiResponse = await callGeminiAPI(inputValue, language);
+        const botMessage: ChatMessage = {
+          id: (Date.now() + 1).toString(),
+          text: aiResponse,
+          sender: 'bot',
+          timestamp: new Date()
+        };
+        setMessages(prev => [...prev, botMessage]);
+      } catch (error) {
+        const botMessage: ChatMessage = {
+          id: (Date.now() + 1).toString(),
+          text: getDefaultResponse(language),
+          sender: 'bot',
+          timestamp: new Date()
+        };
+        setMessages(prev => [...prev, botMessage]);
+      } finally {
+        setIsTyping(false);
+      }
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {

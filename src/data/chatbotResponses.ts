@@ -84,7 +84,7 @@ const chatbotResponsesFr: ChatbotResponse[] = [
     }
   },
   {
-    patterns: [/recommand|sugg(é|e)r|quel|meilleur|devrais/i],
+    patterns: [/recommand|sugg(é|e)r|\bquell?e?s?\b|meilleur|devrais/i],
     response: "Je serais ravi de vous recommander une destination ! Êtes-vous intéressé par des expériences culturelles et artistiques, l'aventure et la nature, ou l'élégance et le raffinement ? Ou peut-être souhaitez-vous faire notre quiz personnalisé pour une recommandation sur mesure ?"
   },
   {
@@ -132,7 +132,7 @@ export const getDefaultResponse = (lang: 'en' | 'fr' = 'en'): string => {
   return responses[Math.floor(Math.random() * responses.length)];
 };
 
-export const getChatbotResponse = (userMessage: string, lang: 'en' | 'fr' = 'en'): string => {
+export const getChatbotResponse = (userMessage: string, lang: 'en' | 'fr' = 'en'): string | null => {
   const responses = lang === 'fr' ? chatbotResponsesFr : chatbotResponsesEn;
 
   for (const { patterns, response } of responses) {
@@ -140,5 +140,5 @@ export const getChatbotResponse = (userMessage: string, lang: 'en' | 'fr' = 'en'
       return typeof response === 'function' ? response() : response;
     }
   }
-  return getDefaultResponse(lang);
+  return null;
 };

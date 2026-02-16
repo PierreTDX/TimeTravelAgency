@@ -56,6 +56,7 @@ TimeTravel Agency is an interactive single-page application that allows users to
 - Expandable chat window with modern UI
 - Pattern-based response system
 - Conversational personality as virtual travel consultant
+- **Hybrid Intelligence**: Uses Google Gemini API for advanced queries, with a local fallback system (degraded mode) if the API is not configured.
 - Features:
   - Destination recommendations
   - Pricing information
@@ -148,11 +149,13 @@ src/
 
 ## AI Integration
 
-The chatbot uses a pattern-matching system to provide intelligent responses:
+The chatbot uses a hybrid system combining pattern matching and Generative AI:
 
+- **LLM API (Google Gemini)**: For natural understanding and creative responses to open-ended questions.
+- **Local Fallback Mode**: If no API key is provided or in case of network error, the chatbot automatically switches to a local rule-based system.
 - **Pattern Recognition**: Regular expressions match user input
 - **Dynamic Responses**: Context-aware answers based on user questions
-- **Fallback System**: Default responses for unmatched queries
+- **Fallback System**: Default responses for unmatched queries in local mode
 - **Personality**: Professional, warm, enthusiastic tone
 - **Knowledge Base**: Information about all destinations, pricing, safety, and booking
 
