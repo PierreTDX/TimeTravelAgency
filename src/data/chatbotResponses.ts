@@ -1,11 +1,11 @@
-import { destinations } from './destinations';
+import { destinations, getDestinations } from './destinations';
 
 export interface ChatbotResponse {
   patterns: RegExp[];
   response: string | (() => string);
 }
 
-export const chatbotResponses: ChatbotResponse[] = [
+const chatbotResponsesEn: ChatbotResponse[] = [
   {
     patterns: [/hello|hi|hey|greetings/i],
     response: "Welcome to TimeTravel Agency! I'm your virtual travel consultant. How may I assist you in planning your journey through time today?"
@@ -59,20 +59,86 @@ export const chatbotResponses: ChatbotResponse[] = [
   }
 ];
 
-export const getDefaultResponse = (): string => {
-  const responses = [
+const chatbotResponsesFr: ChatbotResponse[] = [
+  {
+    patterns: [/bonjour|salut|coucou|h(é|e)llo/i],
+    response: "Bienvenue à l'Agence TimeTravel ! Je suis votre consultant de voyage virtuel. Comment puis-je vous aider à planifier votre voyage à travers le temps aujourd'hui ?"
+  },
+  {
+    patterns: [/paris|eiffel|1889|belle.?epoque/i],
+    response: `Paris 1889 est un choix magnifique ! Vivez la Belle Époque à son apogée. Assistez à l'inauguration de la Tour Eiffel lors de l'Exposition Universelle. Ce voyage est au prix de ${getDestinations('fr')[0].price} par voyageur. Souhaitez-vous en savoir plus sur ce qui est inclus ?`
+  },
+  {
+    patterns: [/dinosaures?|crétacé|pr(é|e)historique|t.?rex|jurassique/i],
+    response: `La période du Crétacé est notre destination la plus aventureuse ! Voyagez 65 millions d'années en arrière pour observer des dinosaures vivants dans leur habitat naturel. Cette expédition premium est à ${getDestinations('fr')[1].price} par voyageur, incluant tous les protocoles de sécurité et l'assurance temporelle. Intéressé par les détails ?`
+  },
+  {
+    patterns: [/florence|renaissance|michel.?ange|da.?vinci|1504/i],
+    response: `Florence 1504 offre une expérience culturelle inégalée ! Rencontrez Michel-Ange et Léonard de Vinci au sommet de la Renaissance. Ce voyage exclusif est à ${getDestinations('fr')[2].price} par voyageur. Dois-je vous fournir plus d'informations sur les points forts ?`
+  },
+  {
+    patterns: [/prix|co(û|u)t|tarif|cher/i],
+    response: () => {
+      const prices = getDestinations('fr').map(d => `${d.name}: ${d.price}`).join(', ');
+      return `Nos expériences de voyage temporel de luxe sont tarifées comme suit : ${prices}. Chaque forfait comprend le transport temporel, l'hébergement d'époque authentique, des guides experts et une assurance temporelle complète. Souhaitez-vous des détails sur ce qui est inclus ?`;
+    }
+  },
+  {
+    patterns: [/recommand|sugg(é|e)r|quel|meilleur|devrais/i],
+    response: "Je serais ravi de vous recommander une destination ! Êtes-vous intéressé par des expériences culturelles et artistiques, l'aventure et la nature, ou l'élégance et le raffinement ? Ou peut-être souhaitez-vous faire notre quiz personnalisé pour une recommandation sur mesure ?"
+  },
+  {
+    patterns: [/r(é|e)serv|achet|commander/i],
+    response: "Merveilleux ! Pour réserver votre voyage temporel, veuillez faire défiler vers le bas jusqu'à notre formulaire de réservation. Vous devrez sélectionner votre destination, vos dates de voyage préférées et fournir vos coordonnées. Notre équipe vous contactera dans les 24 heures temporelles pour finaliser votre aventure !"
+  },
+  {
+    patterns: [/s(é|e)curit(é|e)|danger|risque/i],
+    response: "Votre sécurité est notre priorité absolue ! Tous les voyages incluent une assurance temporelle complète, des guides temporels certifiés et une technologie de stabilisation temporelle de pointe. Nous maintenons des protocoles stricts de non-interférence et fournissons une extraction temporelle d'urgence pour toute circonstance imprévue."
+  },
+  {
+    patterns: [/comment|fonctionne|voyage|processus/i],
+    response: "Notre technologie propriétaire de déplacement temporel permet un passage sûr à travers le continuum espace-temps. Après la réservation, vous assisterez à une brève orientation, recevrez une tenue d'époque appropriée et serez assigné à un guide temporel certifié. Le voyage lui-même est instantané, bien que vous viviez votre période choisie en temps réel !"
+  },
+  {
+    patterns: [/dur(é|e)e|longtemps|s(é|e)jour|jours/i],
+    response: "Les forfaits standard varient de 3 à 14 jours dans votre période choisie. Des séjours prolongés peuvent être organisés moyennant des frais supplémentaires. En raison de la mécanique temporelle, vous reviendrez quelques instants seulement après votre départ, peu importe combien de temps vous passez dans le passé !"
+  },
+  {
+    patterns: [/merci|remerci/i],
+    response: "Je vous en prie ! C'est un plaisir de vous aider. N'hésitez pas à poser d'autres questions sur votre voyage temporel. Bon voyage à travers le temps !"
+  },
+  {
+    patterns: [/aide|info|parle/i],
+    response: "Je suis là pour vous aider à explorer nos destinations de voyage temporel de luxe ! Je peux fournir des informations sur Paris 1889, la période du Crétacé ou Florence 1504. Je peux également vous aider avec les prix, les informations de sécurité et le processus de réservation. Que souhaitez-vous savoir ?"
+  }
+];
+
+export const chatbotResponses = chatbotResponsesEn;
+
+export const getDefaultResponse = (lang: 'en' | 'fr' = 'en'): string => {
+  const responsesEn = [
     "That's an interesting question! While I specialize in our three featured destinations, I'd be happy to help you explore Paris 1889, the Cretaceous Period, or Florence 1504. Which sounds most intriguing?",
     "I'm here to assist with information about our time travel services. Could you please rephrase your question, or ask about one of our destinations?",
     "I want to ensure I provide you with accurate information. Could you ask about our destinations, pricing, or booking process?"
   ];
+
+  const responsesFr = [
+    "C'est une question intéressante ! Bien que je sois spécialisé dans nos trois destinations vedettes, je serais heureux de vous aider à explorer Paris 1889, la période du Crétacé ou Florence 1504. Laquelle vous intrigue le plus ?",
+    "Je suis ici pour vous aider avec des informations sur nos services de voyage temporel. Pourriez-vous reformuler votre question, ou demander des informations sur l'une de nos destinations ?",
+    "Je veux m'assurer de vous fournir des informations précises. Pourriez-vous poser des questions sur nos destinations, nos prix ou notre processus de réservation ?"
+  ];
+
+  const responses = lang === 'fr' ? responsesFr : responsesEn;
   return responses[Math.floor(Math.random() * responses.length)];
 };
 
-export const getChatbotResponse = (userMessage: string): string => {
-  for (const { patterns, response } of chatbotResponses) {
+export const getChatbotResponse = (userMessage: string, lang: 'en' | 'fr' = 'en'): string => {
+  const responses = lang === 'fr' ? chatbotResponsesFr : chatbotResponsesEn;
+
+  for (const { patterns, response } of responses) {
     if (patterns.some(pattern => pattern.test(userMessage))) {
       return typeof response === 'function' ? response() : response;
     }
   }
-  return getDefaultResponse();
+  return getDefaultResponse(lang);
 };

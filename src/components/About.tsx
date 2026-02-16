@@ -2,33 +2,35 @@ import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { Shield, Sparkles, Users, Clock } from 'lucide-react';
-
-const features = [
-  {
-    icon: Clock,
-    title: 'Temporal Precision',
-    description: 'State-of-the-art temporal displacement technology ensures safe and accurate journeys to any point in history.'
-  },
-  {
-    icon: Shield,
-    title: 'Absolute Safety',
-    description: 'Comprehensive temporal insurance and certified guides guarantee your security throughout your journey.'
-  },
-  {
-    icon: Sparkles,
-    title: 'Luxury Experience',
-    description: 'Immerse yourself in authentic period experiences with meticulously curated accommodations and activities.'
-  },
-  {
-    icon: Users,
-    title: 'Expert Guidance',
-    description: 'Our certified temporal historians ensure you experience the most significant moments with deep cultural context.'
-  }
-];
+import { useLanguage } from '../context/LanguageContext.tsx';
 
 export const About = () => {
+  const { t } = useLanguage();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
+
+  const features = [
+    {
+      icon: Clock,
+      title: t.about.features.precision.title,
+      description: t.about.features.precision.desc
+    },
+    {
+      icon: Shield,
+      title: t.about.features.safety.title,
+      description: t.about.features.safety.desc
+    },
+    {
+      icon: Sparkles,
+      title: t.about.features.luxury.title,
+      description: t.about.features.luxury.desc
+    },
+    {
+      icon: Users,
+      title: t.about.features.expert.title,
+      description: t.about.features.expert.desc
+    }
+  ];
 
   return (
     <section className="relative py-24 bg-gradient-to-b from-black via-gray-900 to-black">
@@ -40,12 +42,10 @@ export const About = () => {
           transition={{ duration: 0.8 }}
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-amber-400 to-yellow-500 bg-clip-text text-transparent">
-            Welcome to TimeTravel Agency
+            {t.about.title}
           </h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            We are pioneers in luxury temporal tourism, offering exclusive access to history's most
-            extraordinary moments. Our proprietary technology and expert team make time travel not
-            just possible, but an unforgettable experience of a lifetime.
+            {t.about.description}
           </p>
         </motion.div>
 
@@ -76,7 +76,7 @@ export const About = () => {
           transition={{ duration: 0.8, delay: 0.4 }}
         >
           <p className="text-lg text-gray-400 max-w-2xl mx-auto italic">
-            "The past is not dead, it's not even past. Let us take you there."
+            {t.about.quote}
           </p>
         </motion.div>
       </div>

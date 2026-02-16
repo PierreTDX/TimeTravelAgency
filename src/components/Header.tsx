@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Clock, Menu, X } from 'lucide-react';
+import { Clock, Menu, X, Globe } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext.tsx';
 
 export const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { t, language, setLanguage } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,10 +30,10 @@ export const Header = () => {
   };
 
   const navLinks = [
-    { name: 'Home', id: 'home' },
-    { name: 'Destinations', id: 'destinations' },
-    { name: 'Chat Assistant', id: 'chat' },
-    { name: 'Booking', id: 'booking' }
+    { name: t.header.home, id: 'home' },
+    { name: t.header.destinations, id: 'destinations' },
+    { name: t.header.chat, id: 'chat' },
+    { name: t.header.booking, id: 'booking' }
   ];
 
   return (
@@ -66,6 +68,15 @@ export const Header = () => {
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-amber-500 group-hover:w-full transition-all duration-300" />
             </motion.button>
           ))}
+
+          <motion.button
+            onClick={() => setLanguage(language === 'en' ? 'fr' : 'en')}
+            className="flex items-center gap-1 text-gray-300 hover:text-amber-500 transition-colors"
+            whileHover={{ scale: 1.05 }}
+          >
+            <Globe className="w-4 h-4" />
+            <span className="uppercase font-semibold">{language}</span>
+          </motion.button>
         </div>
 
         <button
@@ -95,6 +106,13 @@ export const Header = () => {
                   {link.name}
                 </motion.button>
               ))}
+              <motion.button
+                onClick={() => setLanguage(language === 'en' ? 'fr' : 'en')}
+                className="text-gray-300 hover:text-amber-500 transition-colors text-left py-2 flex items-center gap-2"
+              >
+                <Globe className="w-4 h-4" />
+                {t.header.switchLanguage}
+              </motion.button>
             </div>
           </motion.div>
         )}

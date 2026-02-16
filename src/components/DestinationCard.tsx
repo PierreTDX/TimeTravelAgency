@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { Destination } from '../types';
+import { useLanguage } from '../context/LanguageContext.tsx';
 
 interface DestinationCardProps {
   destination: Destination;
@@ -8,6 +9,7 @@ interface DestinationCardProps {
 }
 
 export const DestinationCard = ({ destination, onLearnMore }: DestinationCardProps) => {
+  const { t } = useLanguage();
   return (
     <motion.div
       className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 hover:border-amber-500 transition-all duration-300 cursor-pointer h-full flex flex-col"
@@ -43,7 +45,7 @@ export const DestinationCard = ({ destination, onLearnMore }: DestinationCardPro
           className="flex items-center gap-2 text-amber-500 font-semibold group-hover:gap-4 transition-all duration-300 mt-auto"
           whileHover={{ x: 5 }}
         >
-          Learn More
+          {t.destinations.learnMore}
           <ArrowRight className="w-5 h-5" />
         </motion.button>
       </div>

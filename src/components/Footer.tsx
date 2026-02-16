@@ -1,7 +1,9 @@
 import { Clock, Mail, MapPin, Phone } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext.tsx';
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const { t } = useLanguage();
 
   const scrollToSection = (id: string) => {
     if (id === 'chat') {
@@ -30,39 +32,38 @@ export const Footer = () => {
               </span>
             </div>
             <p className="text-gray-400 leading-relaxed">
-              Experience luxury time travel to history's most extraordinary moments.
-              Your journey through time begins here.
+              {t.footer.description}
             </p>
           </div>
 
           <div>
-            <h3 className="text-white font-bold mb-4">Quick Links</h3>
+            <h3 className="text-white font-bold mb-4">{t.footer.quickLinks}</h3>
             <ul className="space-y-2">
               <li>
                 <button onClick={() => scrollToSection('home')} className="text-gray-400 hover:text-amber-500 transition-colors">
-                  Home
+                  {t.header.home}
                 </button>
               </li>
               <li>
                 <button onClick={() => scrollToSection('destinations')} className="text-gray-400 hover:text-amber-500 transition-colors">
-                  Destinations
+                  {t.header.destinations}
                 </button>
               </li>
               <li>
                 <button onClick={() => scrollToSection('chat')} className="text-gray-400 hover:text-amber-500 transition-colors">
-                  Chat Assistant
+                  {t.header.chat}
                 </button>
               </li>
               <li>
                 <button onClick={() => scrollToSection('booking')} className="text-gray-400 hover:text-amber-500 transition-colors">
-                  Booking
+                  {t.header.booking}
                 </button>
               </li>
             </ul>
           </div>
 
           <div>
-            <h3 className="text-white font-bold mb-4">Destinations</h3>
+            <h3 className="text-white font-bold mb-4">{t.footer.destinations}</h3>
             <ul className="space-y-2">
               <li>
                 <button onClick={() => openDestinationModal('paris-1889')} className="text-gray-400 hover:text-amber-500 transition-colors text-left">
@@ -83,7 +84,7 @@ export const Footer = () => {
           </div>
 
           <div>
-            <h3 className="text-white font-bold mb-4">Contact</h3>
+            <h3 className="text-white font-bold mb-4">{t.footer.contact}</h3>
             <ul className="space-y-3">
               <li className="flex items-start gap-2 text-gray-400">
                 <MapPin className="w-5 h-5 text-amber-500 mt-0.5 flex-shrink-0" />
@@ -103,10 +104,10 @@ export const Footer = () => {
 
         <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-gray-400 text-sm text-center md:text-left">
-            {currentYear} TimeTravel Agency. All rights reserved across all timelines.
+            {currentYear} {t.footer.rights}
           </p>
           <p className="text-gray-500 text-sm text-center md:text-right">
-            This is a fictional luxury time travel concept project.
+            {t.footer.disclaimer}
           </p>
         </div>
       </div>

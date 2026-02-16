@@ -1,8 +1,9 @@
 import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
-import heroImage from '../../public/images/destinations/hero.webp';
+import { useLanguage } from '../context/LanguageContext.tsx';
 
 export const Hero = () => {
+  const { t } = useLanguage();
   const scrollToDestinations = () => {
     const element = document.getElementById('destinations');
     if (element) {
@@ -14,7 +15,7 @@ export const Hero = () => {
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0">
         <img
-          src={heroImage}
+          src="/images/destinations/hero.webp"
           alt="Hero Background"
           className="w-full h-full object-cover opacity-70"
         />
@@ -33,9 +34,9 @@ export const Hero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            Explore Time.
-            <br />
-            Travel Beyond History.
+            {t.hero.title.split('\n').map((line, i) => (
+              <span key={i}>{line}<br /></span>
+            ))}
           </motion.h1>
 
           <motion.p
@@ -44,9 +45,7 @@ export const Hero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            Experience luxury time travel to history's most extraordinary moments.
-            Witness the Eiffel Tower's inauguration, walk with dinosaurs, or meet Renaissance masters.
-            Your journey through time begins here.
+            {t.hero.subtitle}
           </motion.p>
 
           <motion.button
@@ -58,7 +57,7 @@ export const Hero = () => {
             whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(251, 191, 36, 0.4)' }}
             whileTap={{ scale: 0.95 }}
           >
-            <span className="relative z-10">Discover Destinations</span>
+            <span className="relative z-10">{t.hero.cta}</span>
             <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-amber-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </motion.button>
         </motion.div>

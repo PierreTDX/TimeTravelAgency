@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Check } from 'lucide-react';
 import { Destination } from '../types';
+import { useLanguage } from '../context/LanguageContext.tsx';
 
 interface DestinationModalProps {
   destination: Destination | null;
@@ -9,6 +10,7 @@ interface DestinationModalProps {
 }
 
 export const DestinationModal = ({ destination, isOpen, onClose }: DestinationModalProps) => {
+  const { t } = useLanguage();
   if (!destination) return null;
 
   return (
@@ -53,14 +55,14 @@ export const DestinationModal = ({ destination, isOpen, onClose }: DestinationMo
 
               <div className="p-8">
                 <div className="mb-8">
-                  <h3 className="text-2xl font-bold text-white mb-4">Journey Overview</h3>
+                  <h3 className="text-2xl font-bold text-white mb-4">{t.destinations.overview}</h3>
                   <p className="text-gray-300 leading-relaxed text-lg">
                     {destination.fullDescription}
                   </p>
                 </div>
 
                 <div className="mb-8">
-                  <h3 className="text-2xl font-bold text-white mb-4">Experience Highlights</h3>
+                  <h3 className="text-2xl font-bold text-white mb-4">{t.destinations.highlights}</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {destination.highlights.map((highlight, index) => (
                       <motion.div
@@ -81,9 +83,9 @@ export const DestinationModal = ({ destination, isOpen, onClose }: DestinationMo
 
                 <div className="flex items-center justify-between gap-4 pt-6 border-t border-gray-700">
                   <div>
-                    <p className="text-gray-400 mb-1">Starting from</p>
+                    <p className="text-gray-400 mb-1">{t.destinations.startingFrom}</p>
                     <p className="text-3xl font-bold text-amber-500">{destination.price}</p>
-                    <p className="text-sm text-gray-400">per traveler</p>
+                    <p className="text-sm text-gray-400">{t.destinations.perTraveler}</p>
                   </div>
                   <motion.button
                     onClick={() => {
@@ -97,7 +99,7 @@ export const DestinationModal = ({ destination, isOpen, onClose }: DestinationMo
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    Book This Journey
+                    {t.destinations.book}
                   </motion.button>
                 </div>
               </div>

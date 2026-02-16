@@ -2,10 +2,12 @@ import { useState, useRef, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { DestinationCard } from './DestinationCard';
 import { DestinationModal } from './DestinationModal';
-import { destinations } from '../data/destinations';
+import { getDestinations } from '../data/destinations';
 import { Destination } from '../types';
+import { useLanguage } from '../context/LanguageContext.tsx';
 
 export const Destinations = () => {
+  const { t, language } = useLanguage();
   const [selectedDestination, setSelectedDestination] = useState<Destination | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const ref = useRef(null);
@@ -13,6 +15,7 @@ export const Destinations = () => {
 
   useEffect(() => {
     const handleOpenModal = (event: CustomEvent) => {
+      const destinations = getDestinations(language);
       const destinationId = event.detail;
       const destination = destinations.find(d => d.id === destinationId);
       if (destination) {
@@ -23,7 +26,7 @@ export const Destinations = () => {
 
     window.addEventListener('open-destination-modal' as any, handleOpenModal as any);
     return () => window.removeEventListener('open-destination-modal' as any, handleOpenModal as any);
-  }, []);
+  }, [language]);
 
   const handleLearnMore = (destination: Destination) => {
     setSelectedDestination(destination);
@@ -40,16 +43,15 @@ export const Destinations = () => {
           transition={{ duration: 0.8 }}
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-amber-400 to-yellow-500 bg-clip-text text-transparent">
-            Featured Destinations
+            {t.destinations.title}
           </h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            Choose from our carefully curated selection of time periods, each offering
-            unique experiences and unforgettable moments in history.
+            {t.destinations.subtitle}
           </p>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {destinations.map((destination, index) => (
+          {getDestinations(language).map((destination, index) => (
             <motion.div
               key={destination.id}
               initial={{ opacity: 0, y: 30 }}

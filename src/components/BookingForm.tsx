@@ -1,10 +1,13 @@
 import { useState, useRef } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { Calendar, Mail, User, MapPin, CheckCircle } from 'lucide-react';
-import { destinations } from '../data/destinations';
+import { getDestinations } from '../data/destinations';
 import { BookingFormData } from '../types';
+import { useLanguage } from '../context/LanguageContext.tsx';
 
 export const BookingForm = () => {
+  const { t, language } = useLanguage();
+  const destinations = getDestinations(language);
   const [formData, setFormData] = useState<BookingFormData>({
     name: '',
     email: '',
@@ -21,27 +24,27 @@ export const BookingForm = () => {
     const newErrors: Partial<BookingFormData> = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = 'Name is required';
+      newErrors.name = t.booking.form.errors.nameRequired;
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
+      newErrors.email = t.booking.form.errors.emailRequired;
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Invalid email format';
+      newErrors.email = t.booking.form.errors.emailInvalid;
     }
 
     if (!formData.destination) {
-      newErrors.destination = 'Please select a destination';
+      newErrors.destination = t.booking.form.errors.destinationRequired;
     }
 
     if (!formData.departureDate) {
-      newErrors.departureDate = 'Departure date is required';
+      newErrors.departureDate = t.booking.form.errors.departureRequired;
     }
 
     if (!formData.returnDate) {
-      newErrors.returnDate = 'Return date is required';
+      newErrors.returnDate = t.booking.form.errors.returnRequired;
     } else if (formData.departureDate && formData.returnDate <= formData.departureDate) {
-      newErrors.returnDate = 'Return date must be after departure date';
+      newErrors.returnDate = t.booking.form.errors.returnInvalid;
     }
 
     setErrors(newErrors);
@@ -90,13 +93,12 @@ export const BookingForm = () => {
             >
               <CheckCircle className="w-16 h-16 text-black" />
             </motion.div>
-            <h2 className="text-3xl font-bold text-white mb-4">Booking Submitted!</h2>
+            <h2 className="text-3xl font-bold text-white mb-4">{t.booking.success.title}</h2>
             <p className="text-gray-300 text-lg leading-relaxed">
-              Thank you for your interest in time travel with us. Our team will review your booking
-              request and contact you within 24 temporal hours to finalize your journey through time.
+              {t.booking.success.message}
             </p>
             <p className="text-amber-500 mt-6 font-semibold">
-              Check your email for confirmation details.
+              {t.booking.success.checkEmail}
             </p>
           </motion.div>
         </div>
@@ -114,10 +116,10 @@ export const BookingForm = () => {
           transition={{ duration: 0.8 }}
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-amber-400 to-yellow-500 bg-clip-text text-transparent">
-            Book Your Journey
+            {t.booking.title}
           </h2>
           <p className="text-xl text-gray-300">
-            Complete the form below to begin your time travel adventure
+            {t.booking.subtitle}
           </p>
         </motion.div>
 
@@ -132,16 +134,15 @@ export const BookingForm = () => {
             <div>
               <label className="flex items-center gap-2 text-gray-300 mb-2 font-semibold">
                 <User className="w-5 h-5 text-amber-500" />
-                Full Name
+                {t.booking.form.name}
               </label>
               <input
                 type="text"
                 value={formData.name}
                 onChange={(e) => handleChange('name', e.target.value)}
-                className={`w-full bg-gray-700 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 ${
-                  errors.name ? 'ring-2 ring-red-500' : ''
-                }`}
-                placeholder="Enter your full name"
+                className={`w-full bg-gray-700 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 ${errors.name ? 'ring-2 ring-red-500' : ''
+                  }`}
+                placeholder={t.booking.form.namePlaceholder}
               />
               <AnimatePresence>
                 {errors.name && (
@@ -160,16 +161,15 @@ export const BookingForm = () => {
             <div>
               <label className="flex items-center gap-2 text-gray-300 mb-2 font-semibold">
                 <Mail className="w-5 h-5 text-amber-500" />
-                Email Address
+                {t.booking.form.email}
               </label>
               <input
                 type="email"
                 value={formData.email}
                 onChange={(e) => handleChange('email', e.target.value)}
-                className={`w-full bg-gray-700 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 ${
-                  errors.email ? 'ring-2 ring-red-500' : ''
-                }`}
-                placeholder="your.email@example.com"
+                className={`w-full bg-gray-700 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 ${errors.email ? 'ring-2 ring-red-500' : ''
+                  }`}
+                placeholder={t.booking.form.emailPlaceholder}
               />
               <AnimatePresence>
                 {errors.email && (
@@ -188,16 +188,15 @@ export const BookingForm = () => {
             <div>
               <label className="flex items-center gap-2 text-gray-300 mb-2 font-semibold">
                 <MapPin className="w-5 h-5 text-amber-500" />
-                Destination
+                {t.booking.form.destination}
               </label>
               <select
                 value={formData.destination}
                 onChange={(e) => handleChange('destination', e.target.value)}
-                className={`w-full bg-gray-700 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 ${
-                  errors.destination ? 'ring-2 ring-red-500' : ''
-                }`}
+                className={`w-full bg-gray-700 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 ${errors.destination ? 'ring-2 ring-red-500' : ''
+                  }`}
               >
-                <option value="">Select a destination</option>
+                <option value="">{t.booking.form.selectDestination}</option>
                 {destinations.map((dest) => (
                   <option key={dest.id} value={dest.id}>
                     {dest.name} - {dest.price}
@@ -222,16 +221,15 @@ export const BookingForm = () => {
               <div>
                 <label className="flex items-center gap-2 text-gray-300 mb-2 font-semibold">
                   <Calendar className="w-5 h-5 text-amber-500" />
-                  Departure Date
+                  {t.booking.form.departure}
                 </label>
                 <input
                   type="date"
                   value={formData.departureDate}
                   onChange={(e) => handleChange('departureDate', e.target.value)}
                   min={new Date().toISOString().split('T')[0]}
-                  className={`w-full bg-gray-700 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 ${
-                    errors.departureDate ? 'ring-2 ring-red-500' : ''
-                  }`}
+                  className={`w-full bg-gray-700 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 ${errors.departureDate ? 'ring-2 ring-red-500' : ''
+                    }`}
                 />
                 <AnimatePresence>
                   {errors.departureDate && (
@@ -250,16 +248,15 @@ export const BookingForm = () => {
               <div>
                 <label className="flex items-center gap-2 text-gray-300 mb-2 font-semibold">
                   <Calendar className="w-5 h-5 text-amber-500" />
-                  Return Date
+                  {t.booking.form.return}
                 </label>
                 <input
                   type="date"
                   value={formData.returnDate}
                   onChange={(e) => handleChange('returnDate', e.target.value)}
                   min={formData.departureDate || new Date().toISOString().split('T')[0]}
-                  className={`w-full bg-gray-700 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 ${
-                    errors.returnDate ? 'ring-2 ring-red-500' : ''
-                  }`}
+                  className={`w-full bg-gray-700 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 ${errors.returnDate ? 'ring-2 ring-red-500' : ''
+                    }`}
                 />
                 <AnimatePresence>
                   {errors.returnDate && (
@@ -282,7 +279,7 @@ export const BookingForm = () => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              Submit Booking Request
+              {t.booking.form.submit}
             </motion.button>
           </div>
         </motion.form>

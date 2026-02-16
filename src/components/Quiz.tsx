@@ -1,11 +1,15 @@
 import { useState, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { ChevronRight, RotateCcw, Sparkles } from 'lucide-react';
-import { quizQuestions, getRecommendationReason } from '../data/quizData';
-import { destinations } from '../data/destinations';
+import { getQuizQuestions, getRecommendationReason } from '../data/quizData';
+import { getDestinations } from '../data/destinations';
 import { Destination } from '../types';
+import { useLanguage } from '../context/LanguageContext.tsx';
 
 export const Quiz = () => {
+  const { t, language } = useLanguage();
+  const destinations = getDestinations(language);
+  const quizQuestions = getQuizQuestions(language);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<{ [key: number]: number }>({});
   const [showResult, setShowResult] = useState(false);
@@ -81,9 +85,9 @@ export const Quiz = () => {
                 <Sparkles className="w-12 h-12 text-black" />
               </motion.div>
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                Your Perfect Destination
+                {t.quiz.result.title}
               </h2>
-              <p className="text-gray-400">Based on your preferences, we recommend:</p>
+              <p className="text-gray-400">{t.quiz.result.subtitle}</p>
             </div>
 
             <motion.div
@@ -115,7 +119,7 @@ export const Quiz = () => {
               transition={{ delay: 0.6 }}
             >
               <p className="text-gray-300 leading-relaxed">
-                {getRecommendationReason(recommendedDestination.id)}
+                {getRecommendationReason(recommendedDestination.id, language)}
               </p>
             </motion.div>
 
@@ -136,7 +140,7 @@ export const Quiz = () => {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                Book This Journey
+                {t.quiz.result.book}
               </motion.button>
               <motion.button
                 onClick={resetQuiz}
@@ -145,7 +149,7 @@ export const Quiz = () => {
                 whileTap={{ scale: 0.98 }}
               >
                 <RotateCcw className="w-5 h-5" />
-                Retake Quiz
+                {t.quiz.result.retake}
               </motion.button>
             </motion.div>
           </motion.div>
@@ -166,10 +170,10 @@ export const Quiz = () => {
           transition={{ duration: 0.8 }}
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-amber-400 to-yellow-500 bg-clip-text text-transparent">
-            Discover Your Ideal Destination
+            {t.quiz.title}
           </h2>
           <p className="text-xl text-gray-300">
-            Answer 4 quick questions to get a personalized recommendation
+            {t.quiz.subtitle}
           </p>
         </motion.div>
 
@@ -181,7 +185,9 @@ export const Quiz = () => {
         >
           <div className="mb-8">
             <div className="flex justify-between items-center mb-2">
-              <span className="text-sm text-gray-400">Question {currentQuestion + 1} of {quizQuestions.length}</span>
+              <span className="text-sm text-gray-400">
+                {t.quiz.questionProgress.replace('{current}', (currentQuestion + 1).toString()).replace('{total}', quizQuestions.length.toString())}
+              </span>
               <span className="text-sm text-amber-500 font-semibold">{Math.round(progress)}%</span>
             </div>
             <div className="h-2 bg-gray-700 rounded-full overflow-hidden">

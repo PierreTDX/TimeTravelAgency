@@ -3,13 +3,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle, X, Send, Loader2 } from 'lucide-react';
 import { ChatMessage } from '../types';
 import { getChatbotResponse } from '../data/chatbotResponses';
+import { useLanguage } from '../context/LanguageContext.tsx';
 
 export const Chatbot = () => {
+  const { t, language } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: '1',
-      text: "Welcome to TimeTravel Agency! I'm your virtual travel consultant. How may I assist you in planning your journey through time today?",
+      text: t.chatbot.welcome,
       sender: 'bot',
       timestamp: new Date()
     }
@@ -21,6 +23,17 @@ export const Chatbot = () => {
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
+
+  useEffect(() => {
+    // Reset welcome message when language changes
+    setMessages(prev => {
+      const newMessages = [...prev];
+      if (newMessages.length > 0 && newMessages[0].id === '1') {
+        newMessages[0].text = t.chatbot.welcome;
+      }
+      return newMessages;
+    });
+  }, [t.chatbot.welcome]);
 
   useEffect(() => {
     scrollToBottom();
@@ -47,7 +60,7 @@ export const Chatbot = () => {
     setIsTyping(true);
 
     setTimeout(() => {
-      const botResponse = getChatbotResponse(inputValue);
+      const botResponse = getChatbotResponse(inputValue, language);
       const botMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
         text: botResponse,
@@ -84,8 +97,8 @@ export const Chatbot = () => {
                     <MessageCircle className="w-5 h-5 text-black" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-black">TimeTravel Assistant</h3>
-                    <p className="text-xs text-black/80">Online now</p>
+                    <h3 className="font-bold text-black">{t.chatbot.title}</h3>
+                    <p className="text-xs text-black/80">{t.chatbot.status}</p>
                   </div>
                 </div>
                 <button
@@ -107,8 +120,8 @@ export const Chatbot = () => {
                   >
                     <div
                       className={`max-w-[80%] p-3 rounded-lg ${message.sender === 'user'
-                          ? 'bg-gradient-to-r from-amber-500 to-yellow-600 text-black'
-                          : 'bg-gray-800 text-gray-200'
+                        ? 'bg-gradient-to-r from-amber-500 to-yellow-600 text-black'
+                        : 'bg-gray-800 text-gray-200'
                         }`}
                     >
                       <p className="text-sm leading-relaxed">{message.text}</p>
@@ -126,7 +139,7 @@ export const Chatbot = () => {
                   >
                     <div className="bg-gray-800 p-3 rounded-lg flex items-center gap-2">
                       <Loader2 className="w-4 h-4 text-amber-500 animate-spin" />
-                      <span className="text-sm text-gray-400">Typing...</span>
+                      <span className="text-sm text-gray-400">{t.chatbot.typing}</span>
                     </div>
                   </motion.div>
                 )}
@@ -140,7 +153,7 @@ export const Chatbot = () => {
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder="Ask about destinations..."
+                    placeholder={t.chatbot.placeholder}
                     className="flex-1 bg-gray-800 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 placeholder-gray-500"
                   />
                   <motion.button
