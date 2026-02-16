@@ -15,7 +15,7 @@ export const destinations: Destination[] = [
       'Parisian café society and artistic salons',
       'Moulin Rouge opening year entertainment'
     ],
-    image: '/src/assets/images/destinations/Paris1889_(4).png',
+    image: '/src/assets/images/destinations/Paris1889.webp',
     price: '€15,000'
   },
   {
@@ -32,7 +32,7 @@ export const destinations: Destination[] = [
       'Study prehistoric flora and fauna',
       'Experience Earth before human civilization'
     ],
-    image: '/src/assets/images/destinations/Cretace–65Mannees_(8).png',
+    image: '/src/assets/images/destinations/Cretace–65Mannees.webp',
     price: '€45,000'
   },
   {
@@ -49,7 +49,7 @@ export const destinations: Destination[] = [
       'Attend philosophical debates and artistic workshops',
       'Witness the birth of modern Western culture'
     ],
-    image: '/src/assets/images/destinations/FlorenceRenaissance1504_(1).png',
+    image: '/src/assets/images/destinations/FlorenceRenaissance1504.webp',
     price: '€22,000'
   }
 ];
