@@ -4,9 +4,6 @@ A modern, immersive, production-ready web application for a fictional luxury tim
 
 Created by:
 - Pierre TONDEUX
-- 
-- 
-- 
 
 ## Project Overview
 

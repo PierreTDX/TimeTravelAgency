@@ -4,9 +4,6 @@ Une application web moderne, immersive et prête pour la production pour une age
 
 Réalisé par:  
 - Pierre TONDEUX
-- 
-- 
-- 
 
 ## Aperçu du Projet
 
