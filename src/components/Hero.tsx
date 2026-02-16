@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
+import heroImage from '../../public/images/destinations/hero.webp';
 
 export const Hero = () => {
   const scrollToDestinations = () => {
@@ -11,13 +12,14 @@ export const Hero = () => {
 
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black">
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzBoLTJWMGgydjMwem0wIDMwdi0yaC0ydjJoMnpNMCAzMGgydjJIMHYtMnptMzAgMGgydjJoLTJ2LTJ6Ii8+PC9nPjwvZz48L3N2Zz4=')] animate-pulse" />
-        </div>
+      <div className="absolute inset-0">
+        <img
+          src={heroImage}
+          alt="Hero Background"
+          className="w-full h-full object-cover opacity-70"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black" />
       </div>
-
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black" />
 
       <div className="relative z-10 container mx-auto px-4 text-center">
         <motion.div
