@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { DestinationCard } from './DestinationCard';
 import { DestinationModal } from './DestinationModal';
@@ -10,6 +10,20 @@ export const Destinations = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
+
+  useEffect(() => {
+    const handleOpenModal = (event: CustomEvent) => {
+      const destinationId = event.detail;
+      const destination = destinations.find(d => d.id === destinationId);
+      if (destination) {
+        setSelectedDestination(destination);
+        setIsModalOpen(true);
+      }
+    };
+
+    window.addEventListener('open-destination-modal' as any, handleOpenModal as any);
+    return () => window.removeEventListener('open-destination-modal' as any, handleOpenModal as any);
+  }, []);
 
   const handleLearnMore = (destination: Destination) => {
     setSelectedDestination(destination);
@@ -41,6 +55,7 @@ export const Destinations = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
               transition={{ duration: 0.6, delay: index * 0.2 }}
+              className="h-full"
             >
               <DestinationCard
                 destination={destination}

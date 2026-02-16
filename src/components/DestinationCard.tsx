@@ -10,7 +10,7 @@ interface DestinationCardProps {
 export const DestinationCard = ({ destination, onLearnMore }: DestinationCardProps) => {
   return (
     <motion.div
-      className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 hover:border-amber-500 transition-all duration-300 cursor-pointer"
+      className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 hover:border-amber-500 transition-all duration-300 cursor-pointer h-full flex flex-col"
       whileHover={{ scale: 1.02 }}
       transition={{ duration: 0.3 }}
     >
@@ -27,7 +27,7 @@ export const DestinationCard = ({ destination, onLearnMore }: DestinationCardPro
         </div>
       </div>
 
-      <div className="p-6">
+      <div className="p-6 flex flex-col flex-grow">
         <div className="mb-2">
           <h3 className="text-2xl font-bold text-white mb-1">{destination.name}</h3>
           <p className="text-amber-500 font-semibold">{destination.period}</p>
@@ -40,7 +40,7 @@ export const DestinationCard = ({ destination, onLearnMore }: DestinationCardPro
 
         <motion.button
           onClick={onLearnMore}
-          className="flex items-center gap-2 text-amber-500 font-semibold group-hover:gap-4 transition-all duration-300"
+          className="flex items-center gap-2 text-amber-500 font-semibold group-hover:gap-4 transition-all duration-300 mt-auto"
           whileHover={{ x: 5 }}
         >
           Learn More

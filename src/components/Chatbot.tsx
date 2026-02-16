@@ -26,6 +26,12 @@ export const Chatbot = () => {
     scrollToBottom();
   }, [messages]);
 
+  useEffect(() => {
+    const handleOpenChat = () => setIsOpen(true);
+    window.addEventListener('open-chat', handleOpenChat);
+    return () => window.removeEventListener('open-chat', handleOpenChat);
+  }, []);
+
   const handleSendMessage = async () => {
     if (!inputValue.trim()) return;
 
@@ -100,11 +106,10 @@ export const Chatbot = () => {
                     transition={{ duration: 0.3 }}
                   >
                     <div
-                      className={`max-w-[80%] p-3 rounded-lg ${
-                        message.sender === 'user'
+                      className={`max-w-[80%] p-3 rounded-lg ${message.sender === 'user'
                           ? 'bg-gradient-to-r from-amber-500 to-yellow-600 text-black'
                           : 'bg-gray-800 text-gray-200'
-                      }`}
+                        }`}
                     >
                       <p className="text-sm leading-relaxed">{message.text}</p>
                       <p className={`text-xs mt-1 ${message.sender === 'user' ? 'text-black/60' : 'text-gray-500'}`}>

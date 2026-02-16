@@ -3,6 +3,21 @@ import { Clock, Mail, MapPin, Phone } from 'lucide-react';
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
 
+  const scrollToSection = (id: string) => {
+    if (id === 'chat') {
+      window.dispatchEvent(new Event('open-chat'));
+    }
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const openDestinationModal = (id: string) => {
+    const event = new CustomEvent('open-destination-modal', { detail: id });
+    window.dispatchEvent(event);
+  };
+
   return (
     <footer className="relative bg-black border-t border-gray-800">
       <div className="container mx-auto px-4 py-12">
@@ -24,24 +39,24 @@ export const Footer = () => {
             <h3 className="text-white font-bold mb-4">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <a href="#home" className="text-gray-400 hover:text-amber-500 transition-colors">
+                <button onClick={() => scrollToSection('home')} className="text-gray-400 hover:text-amber-500 transition-colors">
                   Home
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#destinations" className="text-gray-400 hover:text-amber-500 transition-colors">
+                <button onClick={() => scrollToSection('destinations')} className="text-gray-400 hover:text-amber-500 transition-colors">
                   Destinations
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#chat" className="text-gray-400 hover:text-amber-500 transition-colors">
+                <button onClick={() => scrollToSection('chat')} className="text-gray-400 hover:text-amber-500 transition-colors">
                   Chat Assistant
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#booking" className="text-gray-400 hover:text-amber-500 transition-colors">
+                <button onClick={() => scrollToSection('booking')} className="text-gray-400 hover:text-amber-500 transition-colors">
                   Booking
-                </a>
+                </button>
               </li>
             </ul>
           </div>
@@ -49,9 +64,21 @@ export const Footer = () => {
           <div>
             <h3 className="text-white font-bold mb-4">Destinations</h3>
             <ul className="space-y-2">
-              <li className="text-gray-400">Paris 1889</li>
-              <li className="text-gray-400">Cretaceous Period</li>
-              <li className="text-gray-400">Florence 1504</li>
+              <li>
+                <button onClick={() => openDestinationModal('paris-1889')} className="text-gray-400 hover:text-amber-500 transition-colors text-left">
+                  Paris 1889
+                </button>
+              </li>
+              <li>
+                <button onClick={() => openDestinationModal('cretaceous')} className="text-gray-400 hover:text-amber-500 transition-colors text-left">
+                  Cretaceous Period
+                </button>
+              </li>
+              <li>
+                <button onClick={() => openDestinationModal('florence-1504')} className="text-gray-400 hover:text-amber-500 transition-colors text-left">
+                  Florence 1504
+                </button>
+              </li>
             </ul>
           </div>
 

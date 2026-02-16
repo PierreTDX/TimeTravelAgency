@@ -22,9 +22,9 @@ export const DestinationModal = ({ destination, isOpen, onClose }: DestinationMo
             exit={{ opacity: 0 }}
             onClick={onClose}
           />
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
+          <div className="fixed inset-0 z-50 flex items-start justify-center p-4 overflow-y-auto">
             <motion.div
-              className="relative bg-gradient-to-br from-gray-900 to-black border border-gray-700 rounded-2xl max-w-4xl w-full my-8"
+              className="relative bg-gradient-to-br from-gray-900 to-black border border-gray-700 rounded-2xl max-w-4xl w-full my-auto"
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
@@ -79,7 +79,7 @@ export const DestinationModal = ({ destination, isOpen, onClose }: DestinationMo
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between pt-6 border-t border-gray-700">
+                <div className="flex items-center justify-between gap-4 pt-6 border-t border-gray-700">
                   <div>
                     <p className="text-gray-400 mb-1">Starting from</p>
                     <p className="text-3xl font-bold text-amber-500">{destination.price}</p>

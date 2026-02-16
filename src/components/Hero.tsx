@@ -64,8 +64,8 @@ export const Hero = () => {
         </motion.div>
 
         <motion.div
-          className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
-          initial={{ opacity: 0, y: -20 }}
+          className="absolute bottom-10 left-1/2"
+          initial={{ opacity: 0, y: -20, x: "-50%" }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1, repeat: Infinity, repeatType: 'reverse' }}
         >
