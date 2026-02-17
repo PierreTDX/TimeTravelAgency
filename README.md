@@ -122,165 +122,167 @@ TimeTravel Agency est une application interactive à page unique qui permet aux 
 ```
 src/
 ├── components/
-│   ├── About.tsx           # Agency presentation section
-│   ├── BookingForm.tsx     # Booking form with validation
-│   ├── Chatbot.tsx         # AI chat assistant widget
-│   ├── DestinationCard.tsx # Individual destination card
-│   ├── DestinationModal.tsx# Destination detail modal
-│   ├── Destinations.tsx    # Destinations gallery section
-│   ├── Footer.tsx          # Footer component
-│   ├── Header.tsx          # Navigation header
-│   ├── Hero.tsx            # Hero section
-│   ├── Quiz.tsx            # Personalized quiz component
-│   └── ScrollProgress.tsx  # Scroll progress indicator
+│   ├── About.tsx           # Section de présentation de l'agence
+│   ├── BookingForm.tsx     # Formulaire de réservation avec validation
+│   ├── Chatbot.tsx         # Widget d'assistant de chat IA
+│   ├── DestinationCard.tsx # Carte de destination individuelle
+│   ├── DestinationModal.tsx# Modale de détail de la destination
+│   ├── Destinations.tsx    # Section galerie des destinations
+│   ├── Footer.tsx          # Composant pied de page
+│   ├── Header.tsx          # En-tête de navigation
+│   ├── Hero.tsx            # Section Hero
+│   ├── Quiz.tsx            # Composant de quiz personnalisé
+│   └── ScrollProgress.tsx  # Indicateur de progression du défilement
 ├── data/
-│   ├── chatbotResponses.ts # Chatbot logic and responses
-│   ├── destinations.ts     # Destination data
-│   └── quizData.ts         # Quiz questions and logic
+│   ├── chatbotResponses.ts # Logique et réponses du chatbot
+│   ├── destinations.ts     # Données des destinations
+│   └── quizData.ts         # Questions et logique du quiz
 ├── types/
-│   └── index.ts            # TypeScript type definitions
+│   └── index.ts            # Définitions de types TypeScript
 ├── assets/
 │   └── images/
-│       └── destinations/   # Destination images
-├── App.tsx                 # Main app component
-├── main.tsx               # App entry point
-└── index.css              # Global styles
+│       └── destinations/   # Images des destinations
+├── App.tsx                 # Composant principal de l'application
+├── main.tsx               # Point d'entrée de l'application
+└── index.css              # Styles globaux
 ```
 
-## AI Integration
+## Intégration de l'IA
 
-The chatbot uses a pattern-matching system to provide intelligent responses:
+Le chatbot utilise un système hybride combinant la reconnaissance de motifs et l'IA générative :
 
-- **Pattern Recognition**: Regular expressions match user input
-- **Dynamic Responses**: Context-aware answers based on user questions
-- **Fallback System**: Default responses for unmatched queries
-- **Personality**: Professional, warm, enthusiastic tone
-- **Knowledge Base**: Information about all destinations, pricing, safety, and booking
+- **API LLM (Google Gemini)** : Pour une compréhension naturelle et des réponses créatives aux questions ouvertes.
+- **Mode de repli local** : Si aucune clé API n'est fournie ou en cas d'erreur réseau, le chatbot bascule automatiquement vers un système basé sur des règles locales.
+- **Reconnaissance de motifs** : Des expressions régulières correspondent aux entrées de l'utilisateur.
+- **Réponses dynamiques** : Réponses contextuelles basées sur les questions de l'utilisateur.
+- **Système de repli** : Réponses par défaut pour les requêtes non reconnues en mode local.
+- **Personnalité** : Ton professionnel, chaleureux et enthousiaste.
+- **Base de connaissances** : Informations sur toutes les destinations, les prix, la sécurité et la réservation.
 
-The system is designed to be easily extensible with new patterns and responses.
+Le système est conçu pour être facilement extensible avec de nouveaux motifs et réponses.
 
 ## Installation
 
-1. Clone the repository:
+1. Cloner le dépôt :
 ```bash
 git clone https://github.com/PierreTDX/TimeTravelAgency
 cd TimeTravelAgency
 ```
 
-2. Install dependencies:
+2. Installer les dépendances :
 ```bash
 npm install
 ```
 
-3. Start the development server:
+3. Démarrer le serveur de développement :
 ```bash
 npm run dev
 ```
 
-The application will be available at `http://localhost:5173`
+L'application sera disponible à l'adresse `http://localhost:5173`
 
-## Build for Production
+## Construction pour la Production
 
-Create an optimized production build:
+Créer une version de production optimisée :
 
 ```bash
 npm run build
 ```
 
-Preview the production build:
+Prévisualiser le build de production :
 
 ```bash
 npm run preview
 ```
 
-## Deployment
+## Déploiement
 
-### Vercel (Recommended)
+### Vercel (Recommandé)
 
-1. Install Vercel CLI:
+1. Installer le CLI Vercel :
 ```bash
 npm install -g vercel
 ```
 
-2. Deploy:
+2. Déployer :
 ```bash
 vercel
 ```
 
-### Other Platforms
+### Autres Plateformes
 
-The application is a static site and can be deployed to:
+L'application est un site statique et peut être déployée sur :
 - Netlify
 - GitHub Pages
 - AWS S3 + CloudFront
-- Any static hosting service
+- Tout service d'hébergement statique
 
-Simply upload the contents of the `dist` folder after running `npm run build`.
+Il suffit de téléverser le contenu du dossier `dist` après avoir exécuté `npm run build`.
 
-## Environment Variables
+## Variables d'Environnement
 
-This application runs entirely client-side and requires no environment variables or backend services.
+Cette application fonctionne entièrement côté client et ne nécessite aucune variable d'environnement ni service backend.
 
-## Browser Support
+## Compatibilité Navigateurs
 
-- Chrome/Edge (latest)
-- Firefox (latest)
-- Safari (latest)
-- Mobile browsers (iOS Safari, Chrome Mobile)
+- Chrome/Edge (dernière version)
+- Firefox (dernière version)
+- Safari (dernière version)
+- Navigateurs mobiles (iOS Safari, Chrome Mobile)
 
-## Performance
+## Performances
 
-- Lazy loading for images
-- Optimized animations with Framer Motion
-- Minimal bundle size
-- Fast initial load time
-- Smooth 60fps animations
+- Chargement différé des images
+- Animations optimisées avec Framer Motion
+- Taille du bundle minimale
+- Temps de chargement initial rapide
+- Animations fluides à 60 fps
 
-## Accessibility
+## Accessibilité
 
-- Semantic HTML structure
-- Keyboard navigation support
-- ARIA labels where appropriate
-- Sufficient color contrast
-- Focus indicators
-- Screen reader friendly
+- Structure HTML sémantique
+- Navigation au clavier
+- Attributs ARIA appropriés
+- Contraste des couleurs suffisant
+- Indicateurs de focus
+- Compatible avec les lecteurs d'écran
 
-## Credits
+## Crédits
 
-### Development
-- Built with React + TypeScript + Vite
-- Styled with TailwindCSS
-- Animated with Framer Motion
-- Icons by Lucide React
+### Développement
+- Construit avec React + TypeScript + Vite
+- Stylisé avec TailwindCSS
+- Animé avec Framer Motion
+- Icônes par Lucide React
 
-### Design Philosophy
-- Premium luxury dark theme
-- Mobile-first responsive approach
-- User experience focused
-- Modern web best practices
+### Philosophie de Design
+- Thème sombre haut de gamme et luxueux
+- Approche responsive mobile-first
+- Centré sur l'expérience utilisateur
+- Bonnes pratiques du web moderne
 
 ### Images
-The destination images are placeholder illustrations representing:
-- Paris 1889 Belle Époque era
-- Cretaceous Period prehistoric landscapes
-- Florence 1504 Renaissance period
+Les images des destinations sont des illustrations représentant :
+- Paris 1889 à l'ère de la Belle Époque
+- Les paysages préhistoriques de la Période du Crétacé
+- Florence 1504 à la période de la Renaissance
 
-## License
+## Licence
 
-This is a fictional concept project created for demonstration purposes.
+Ce projet est un concept fictif créé à des fins de démonstration.
 
-## Future Enhancements
+## Améliorations Futures
 
-Potential features for future versions:
-- Backend integration for real booking system
-- User accounts and authentication
-- Payment processing integration
-- Advanced AI chatbot with NLP
-- More destinations
-- Virtual reality previews
-- Social sharing features
-- Multi-language support
+Fonctionnalités potentielles pour les versions futures :
+- Intégration d'un backend pour un vrai système de réservation
+- Comptes utilisateurs et authentification
+- Intégration du traitement des paiements
+- Chatbot IA avancé avec NLP
+- Davantage de destinations
+- Prévisualisations en réalité virtuelle
+- Fonctionnalités de partage sur les réseaux sociaux
+- Support multilingue
 
 ---
 
-**Note**: This is a fictional luxury time travel agency concept. No actual time travel services are provided.
+**Note** : Ceci est un concept fictif d'agence de voyage temporel de luxe. Aucun service de voyage temporel réel n'est fourni.
