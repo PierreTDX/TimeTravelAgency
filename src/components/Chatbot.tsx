@@ -277,11 +277,11 @@ export const Chatbot = () => {
                     onChange={(e) => setInputValue(e.target.value)}
                     onKeyPress={handleKeyPress}
                     placeholder={t.chatbot.placeholder}
-                    className="flex-1 bg-gray-800 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 placeholder-gray-500"
+                    className="flex-1 min-w-0 bg-gray-800 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 placeholder-gray-500"
                   />
                   <motion.button
                     onClick={handleSendMessage}
-                    className="bg-gradient-to-r from-amber-500 to-yellow-600 text-black p-3 rounded-lg hover:shadow-lg hover:shadow-amber-500/40 transition-all"
+                    className="bg-gradient-to-r from-amber-500 to-yellow-600 text-black p-3 rounded-lg hover:shadow-lg hover:shadow-amber-500/40 transition-all flex-shrink-0"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     disabled={!inputValue.trim()}
